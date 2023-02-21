@@ -1,0 +1,42 @@
+name: Build
+
+on:
+  push:
+    branches: [ "master" ]
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macOS-latest ]
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+      - name: Build with Gradle
+        run: ./gradlew publishToMavenLocal
+        env:
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.maven_pgp_signingKey }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.maven_pgp_signingPassword }}
+      - name: Upload library
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}-library
+          path: ~/.m2
+      - name: Stop Gradle
+        run: ./gradlew --stop
