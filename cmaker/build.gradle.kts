@@ -25,7 +25,7 @@ dependencies {
 publish {
     githubRepo = "LSPosed/LSPlugin"
     publishPlugin("cmaker", "org.lsposed.lsplugin.CmakerPlugin") {
-        description.set("Transform apk")
+        description.set("Configure cmake build")
         url.set("https://github.com/LSPosed/LSPlugin")
         licenses {
             license {
