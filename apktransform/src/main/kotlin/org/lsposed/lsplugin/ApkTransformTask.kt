@@ -10,14 +10,10 @@ import org.gradle.api.tasks.*
 import java.io.File
 import javax.inject.Inject
 
-@CacheableTask
 abstract class ApkTransformTask @Inject constructor(
-    private val variant: Variant,
-    private val action: Variant.(BuiltArtifact) -> File?
-) :
-    DefaultTask() {
+    private val variant: Variant, private val action: Variant.(BuiltArtifact) -> File?
+) : DefaultTask() {
     @get:InputDirectory
-    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val apkFolder: DirectoryProperty
 
     @get:OutputDirectory
