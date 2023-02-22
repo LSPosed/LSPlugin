@@ -2,6 +2,19 @@ name: Maven
 
 on:
   workflow_dispatch:
+    inputs:
+      variants:
+        description: 'Variants to publish'
+        type: choice
+        options:
+          - 'all'
+          - 'apksign'
+          - 'apktransform'
+          - 'cmaker'
+          - 'jgit'
+          - 'publish'
+          - 'resopt'
+          - 'none'
 
 jobs:
   build:
@@ -20,7 +33,15 @@ jobs:
           java-version: '17'
           cache: 'gradle'
       - name: Build with Gradle
-        run: ./gradlew publish
+        run: |
+          variant="${{ github.event.inputs.variants }}"
+          if [ "$variant" = "all" ]; then
+            ./gradlew publish
+          elif [ "$variant" = "none" ]; then
+            echo "No variants to publish"
+          else
+            ./gradlew :$variant:publish
+          fi
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.maven_pgp_signingKey }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.maven_pgp_signingPassword }}
