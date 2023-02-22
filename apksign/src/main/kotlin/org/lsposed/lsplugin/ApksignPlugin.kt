@@ -38,7 +38,7 @@ private open class ApksignExtensionImpl(private val project: Project) : ApksignE
         }
 
     private fun maybeConfig() {
-        if (storeFile == null || storePassword == null || keyAlias == null || keyPassword == null || config) return
+        if (storeFileProperty == null || storePasswordProperty == null || keyAliasProperty == null || keyPasswordProperty == null || config) return
         config = true
         project.plugins.withType(AndroidBasePlugin::class.java) {
             project.extensions.configure(ApplicationExtension::class.java) {
@@ -57,9 +57,9 @@ private open class ApksignExtensionImpl(private val project: Project) : ApksignE
                         }
                     }
                 } else {
+                    println("Apksign fallbacks to use debug singature")
                     buildTypes {
                         all {
-                            println("apksign fallbacks to use debug keystore")
                             signingConfig = signingConfigs.getByName("debug")
                         }
                     }
