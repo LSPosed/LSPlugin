@@ -24,7 +24,7 @@ dependencies {
 publish {
     githubRepo = "LSPosed/LSPlugin"
     publishPlugin("$group.publish", "publish", "org.lsposed.lsplugin.PublishPlugin") {
-        name.set("publish")
+        name.set("Publish")
         description.set("Android resources optimizer plugin")
         url.set("https://github.com/LSPosed/LSPlugin")
         licenses {

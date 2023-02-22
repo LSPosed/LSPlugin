@@ -24,6 +24,7 @@ dependencies {
 publish {
     githubRepo = "LSPosed/LSPlugin"
     publishPlugin("$group.apktransform", "apktransform", "org.lsposed.lsplugin.ApktransformPlugin") {
+        name.set("ApkTransform")
         description.set("Transform apk")
         url.set("https://github.com/LSPosed/LSPlugin")
         licenses {
