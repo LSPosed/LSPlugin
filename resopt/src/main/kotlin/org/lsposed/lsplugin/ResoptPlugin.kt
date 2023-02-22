@@ -23,7 +23,7 @@ class ResoptPlugin : Plugin<Project> {
                         project.buildDir.path,
                         "intermediates",
                         "optimized_processed_res",
-                        name,
+                        variant.name,
                         "resources-release-optimize.ap_"
                     )
                     val optimized = File("${zip}.opt")
