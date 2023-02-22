@@ -21,5 +21,4 @@ dependencyResolutionManagement {
         }
     }
 }
-include(":publish")
-include(":jgit", ":resopt", ":apksign", ":apktransform", ":cmaker")
+include(":publish", ":jgit", ":resopt", ":apksign", ":apktransform", ":cmaker")

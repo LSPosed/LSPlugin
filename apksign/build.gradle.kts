@@ -11,7 +11,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-group = "org.lsposed.lsplugin.apksign"
 version = "1.0"
 
 kotlin {
@@ -24,7 +23,7 @@ dependencies {
 
 publish {
     githubRepo = "LSPosed/LSPlugin"
-    publishPlugin("apksign", "org.lsposed.lsplugin.ApksignPlugin") {
+    publishPlugin("$group.apksign", "apksign", "org.lsposed.lsplugin.ApksignPlugin") {
         description.set("Sign apk")
         url.set("https://github.com/LSPosed/LSPlugin")
         licenses {

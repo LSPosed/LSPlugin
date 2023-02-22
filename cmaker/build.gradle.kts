@@ -11,7 +11,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-group = "org.lsposed.lsplugin.cmaker"
 version = "1.0"
 
 kotlin {
@@ -24,7 +23,7 @@ dependencies {
 
 publish {
     githubRepo = "LSPosed/LSPlugin"
-    publishPlugin("cmaker", "org.lsposed.lsplugin.CmakerPlugin") {
+    publishPlugin("$group.cmaker", "cmaker", "org.lsposed.lsplugin.CmakerPlugin") {
         description.set("Configure cmake build")
         url.set("https://github.com/LSPosed/LSPlugin")
         licenses {

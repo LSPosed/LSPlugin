@@ -11,7 +11,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-group = "org.lsposed.lsplugin.apktransform"
 version = "1.0"
 
 kotlin {
@@ -24,7 +23,7 @@ dependencies {
 
 publish {
     githubRepo = "LSPosed/LSPlugin"
-    publishPlugin("apktransform", "org.lsposed.lsplugin.ApktransformPlugin") {
+    publishPlugin("$group.apktransform", "apktransform", "org.lsposed.lsplugin.ApktransformPlugin") {
         description.set("Transform apk")
         url.set("https://github.com/LSPosed/LSPlugin")
         licenses {

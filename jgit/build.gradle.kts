@@ -11,7 +11,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-group = "org.lsposed.lsplugin.jgit"
 version = "1.0"
 
 kotlin {
@@ -24,7 +23,7 @@ dependencies {
 
 publish {
     githubRepo = "LSPosed/LSPlugin"
-    publishPlugin("jgit", "org.lsposed.lsplugin.JGitPlugin") {
+    publishPlugin("$group.jgit", "jgit", "org.lsposed.lsplugin.JGitPlugin") {
         name.set("JGit")
         description.set("Git plugin for Gradle")
         url.set("https://github.com/LSPosed/LSPlugin")

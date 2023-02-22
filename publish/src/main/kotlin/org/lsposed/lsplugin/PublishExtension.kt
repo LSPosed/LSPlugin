@@ -7,5 +7,5 @@ import org.gradle.api.publish.maven.MavenPublication
 sealed interface PublishExtension {
     var githubRepo: String?
     fun publications(action: PublicationContainer.() -> Unit)
-    fun publishPlugin(name: String, implementationClass: String, action: MavenPom.() -> Unit)
+    fun publishPlugin(id: String, name: String, implementationClass: String, action: MavenPom.() -> Unit)
 }

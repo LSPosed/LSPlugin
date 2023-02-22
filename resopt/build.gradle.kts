@@ -11,7 +11,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-group = "org.lsposed.lsplugin.resopt"
 version = "1.0"
 
 kotlin {
@@ -24,7 +23,7 @@ dependencies {
 
 publish {
     githubRepo = "LSPosed/LSPlugin"
-    publishPlugin("resopt", "org.lsposed.lsplugin.ResoptPlugin") {
+    publishPlugin("$group.resopt", "resopt", "org.lsposed.lsplugin.ResoptPlugin") {
         description.set("Android resources optimizer plugin")
         url.set("https://github.com/LSPosed/LSPlugin")
         licenses {

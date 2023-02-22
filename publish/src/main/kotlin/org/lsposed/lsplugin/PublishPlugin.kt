@@ -57,13 +57,13 @@ open class PublishExtensionImpl(private val project: Project) : PublishExtension
         }
     }
 
-    override fun publishPlugin(name: String, implementationClass: String, action: MavenPom.() -> Unit) {
+    override fun publishPlugin(id: String, name: String, implementationClass: String, action: MavenPom.() -> Unit) {
         project.run {
             plugins.withType(JavaGradlePluginPlugin::class.java) {
                 extensions.configure(GradlePluginDevelopmentExtension::class.java) {
                     plugins {
                         register(name) {
-                            id = group.toString()
+                            this@register.id = id
                             this@register.implementationClass = implementationClass
                         }
                     }
