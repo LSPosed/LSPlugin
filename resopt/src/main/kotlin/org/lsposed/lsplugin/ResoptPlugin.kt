@@ -47,11 +47,13 @@ class ResoptPlugin : Plugin<Project> {
                                 isIgnoreExitValue = true
                             }
                             if (cmd.exitValue == 0) {
-                                injected.fs.sync {
-                                    from(workdir)
-                                    include(optimized)
-                                    rename(optimized, zip)
+                                injected.fs.copy {
+                                    from(workdir.resolve(optimized))
+                                    rename { zip }
                                     into(workdir)
+                                }
+                                injected.fs.delete {
+                                    delete(workdir.resolve(optimized))
                                 }
                             } else {
                                 println("Failed to optimize $name resources")
