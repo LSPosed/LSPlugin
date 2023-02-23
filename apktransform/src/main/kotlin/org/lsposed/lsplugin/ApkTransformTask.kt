@@ -11,7 +11,7 @@ import java.io.File
 import javax.inject.Inject
 
 abstract class ApkTransformTask @Inject constructor(
-    private val variant: Variant, private val action: Variant.(BuiltArtifact) -> File?
+    private val action: (BuiltArtifact) -> File?
 ) : DefaultTask() {
     @get:InputDirectory
     abstract val apkFolder: DirectoryProperty
@@ -24,6 +24,6 @@ abstract class ApkTransformTask @Inject constructor(
 
     @TaskAction
     fun taskAction() = transformationRequest.get().submit(this) { artifact ->
-        variant.action(artifact) ?: File(artifact.outputFile)
+        action(artifact) ?: File(artifact.outputFile)
     }
 }

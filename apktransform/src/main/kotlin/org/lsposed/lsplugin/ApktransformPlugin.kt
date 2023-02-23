@@ -7,21 +7,27 @@ import com.android.build.api.variant.Variant
 import com.android.build.gradle.api.AndroidBasePlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
+import javax.inject.Inject
 
+interface Injected {
+    @get:Inject
+    val fs: FileSystemOperations
+}
 
 private open class ApktransformExtensionImpl(private val project: Project) : ApktransformExtension {
-    override fun transform(action: Variant.(BuiltArtifact) -> File?) {
+    override fun transform(action: (Variant) -> ((BuiltArtifact) -> File?)?) {
         project.plugins.withType(AndroidBasePlugin::class.java) {
             project.extensions.configure(ApplicationAndroidComponentsExtension::class.java) {
                 onVariants { variant ->
+                    val transform = action(variant) ?: return@onVariants
                     variant.registerTransform(
                         project.tasks.register(
                             "transform${variant.name.replaceFirstChar { it.uppercase() }}Apk",
                             ApkTransformTask::class.java,
-                            variant,
-                            action
+                            transform
                         )
                     )
                 }
@@ -29,25 +35,28 @@ private open class ApktransformExtensionImpl(private val project: Project) : Apk
         }
     }
 
-    override fun copy(action: Variant.() -> File?) {
+    override fun copy(action: (Variant) -> File?) {
         project.plugins.withType(AndroidBasePlugin::class.java) {
             project.extensions.configure(ApplicationAndroidComponentsExtension::class.java) {
                 onVariants { variant ->
-                    val outFile = action(variant)
-                    if (outFile != null) {
-                        val copyAction: Variant.(BuiltArtifact) -> File = { artifact ->
-                            outFile.parentFile.mkdirs()
-                            File(artifact.outputFile).copyTo(outFile, true)
+                    val outFile = action(variant) ?: return@onVariants
+                    val variantName = variant.name
+                    val inject = project.objects.newInstance(Injected::class.java)
+                    val copyAction: (BuiltArtifact) -> File = { artifact ->
+                        inject.fs.copy {
+                            from(artifact.outputFile)
+                            into(outFile.parentFile)
+                            rename { outFile.name }
                         }
-                        variant.registerTransform(
-                            project.tasks.register(
-                                "copy${variant.name.replaceFirstChar { it.uppercase() }}Apk",
-                                ApkTransformTask::class.java,
-                                variant,
-                                copyAction
-                            )
-                        )
+                        outFile
                     }
+                    variant.registerTransform(
+                        project.tasks.register(
+                            "copy${variant.name.replaceFirstChar { it.uppercase() }}Apk",
+                            ApkTransformTask::class.java,
+                            copyAction
+                        )
+                    )
                 }
             }
         }
