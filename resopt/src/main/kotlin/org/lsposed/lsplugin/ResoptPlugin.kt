@@ -42,7 +42,15 @@ class ResoptPlugin : Plugin<Project> {
                         val injected = objects.newInstance<Injected>()
                         tasks.getByPath("optimize${name.replaceFirstChar { c -> c.uppercase() }}Resources").doLast {
                             val cmd = injected.exec.exec {
-                                commandLine(aapt2, "optimize", "--collapse-resource-names", "-o", optimized, zip)
+                                commandLine(
+                                    aapt2,
+                                    "optimize",
+                                    "--collapse-resource-names",
+                                    "--enable-sparse-encoding",
+                                    "-o",
+                                    optimized,
+                                    zip
+                                )
                                 workingDir = workdir
                                 isIgnoreExitValue = true
                             }
