@@ -52,7 +52,7 @@ private open class ApktransformExtensionImpl(private val project: Project) : Apk
                     }
                     variant.registerTransform(
                         project.tasks.register(
-                            "copy${variant.name.replaceFirstChar { it.uppercase() }}Apk",
+                            "copy${variantName.replaceFirstChar { it.uppercase() }}Apk",
                             ApkTransformTask::class.java,
                             copyAction
                         )

@@ -99,12 +99,12 @@ class PublishPlugin : Plugin<Project> {
                 extensions.configure(SigningExtension::class.java) {
                     val signingKey = findProperty("signingKey") as String?
                     val signingPassword = findProperty("signingPassword") as String?
-                    if (signingKey != null && signingPassword != null) {
+                    if (!signingKey.isNullOrBlank() && !signingPassword.isNullOrBlank()) {
                         useInMemoryPgpKeys(signingKey, signingPassword)
-                    }
-                    plugins.withType(MavenPublishPlugin::class.java) {
-                        extensions.configure(PublishingExtension::class.java) {
-                            sign(publications)
+                        plugins.withType(MavenPublishPlugin::class.java) {
+                            extensions.configure(PublishingExtension::class.java) {
+                                sign(publications)
+                            }
                         }
                     }
                 }
@@ -126,6 +126,4 @@ class PublishPlugin : Plugin<Project> {
             }
         }
     }
-
-    private fun SigningExtension.config(project: Project): Unit = project.run {}
 }
