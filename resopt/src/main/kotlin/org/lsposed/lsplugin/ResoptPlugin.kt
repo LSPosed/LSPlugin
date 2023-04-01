@@ -31,12 +31,10 @@ class ResoptPlugin : Plugin<Project> {
                         sdkComponents.sdkDirectory.get().toString(), "build-tools", ext.buildToolsVersion, "aapt2"
                     )
                     val workdir = Paths.get(
-                        project.buildDir.path,
-                        "intermediates",
-                        "optimized_processed_res",
-                        name
+                        project.buildDir.path, "intermediates", "optimized_processed_res", name
                     ).toFile()
-                    val zip = "resources-release-optimize.ap_"
+                    val zip =
+                        if (variant.flavorName != null) "resources-${variant.flavorName}-${variant.buildType}-optimize.ap_" else "resources-${variant.buildType}-optimize.ap_"
                     val optimized = "$zip.opt"
                     project.afterEvaluate {
                         val injected = objects.newInstance<Injected>()
