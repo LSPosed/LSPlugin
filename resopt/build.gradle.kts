@@ -11,7 +11,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-version = "1.4"
+version = "1.5"
 
 kotlin {
     jvmToolchain(17)
