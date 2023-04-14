@@ -11,7 +11,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-version = "1.0"
+version = "1.1"
 
 kotlin {
     jvmToolchain(17)
@@ -24,24 +24,24 @@ dependencies {
 publish {
     githubRepo = "LSPosed/LSPlugin"
     publishPlugin("$group.cmaker", "cmaker", "org.lsposed.lsplugin.CmakerPlugin") {
-        name.set("CMaker")
-        description.set("Configure cmake build")
-        url.set("https://github.com/LSPosed/LSPlugin")
+        name = "CMaker"
+        description = "Configure cmake build"
+        url = "https://github.com/LSPosed/LSPlugin"
         licenses {
             license {
-                name.set("Apache License 2.0")
-                url.set("https://github.com/LSPosed/LSPlugin/blob/master/LICENSE.txt")
+                name = "Apache License 2.0"
+                url = "https://github.com/LSPosed/LSPlugin/blob/master/LICENSE.txt"
             }
         }
         developers {
             developer {
-                name.set("LSPosed")
-                url.set("https://lsposed.org")
+                name = "LSPosed"
+                url = "https://lsposed.org"
             }
         }
         scm {
-            connection.set("scm:git:https://github.com/LSPosed/LSPlugin.git")
-            url.set("https://github.com/LSPosed/LSPlugin")
+            connection = "scm:git:https://github.com/LSPosed/LSPlugin.git"
+            url = "https://github.com/LSPosed/LSPlugin"
         }
     }
 }

@@ -24,24 +24,24 @@ dependencies {
 publish {
     githubRepo = "LSPosed/LSPlugin"
     publishPlugin("$group.apksign", "apksign", "org.lsposed.lsplugin.ApksignPlugin") {
-        name.set("ApkSign")
-        description.set("Sign apk")
-        url.set("https://github.com/LSPosed/LSPlugin")
+        name = "ApkSign"
+        description = "Sign apk"
+        url = "https://github.com/LSPosed/LSPlugin"
         licenses {
             license {
-                name.set("Apache License 2.0")
-                url.set("https://github.com/LSPosed/LSPlugin/blob/master/LICENSE.txt")
+                name = "Apache License 2.0"
+                url = "https://github.com/LSPosed/LSPlugin/blob/master/LICENSE.txt"
             }
         }
         developers {
             developer {
-                name.set("LSPosed")
-                url.set("https://lsposed.org")
+                name = "LSPosed"
+                url = "https://lsposed.org"
             }
         }
         scm {
-            connection.set("scm:git:https://github.com/LSPosed/LSPlugin.git")
-            url.set("https://github.com/LSPosed/LSPlugin")
+            connection = "scm:git:https://github.com/LSPosed/LSPlugin.git"
+            url = "https://github.com/LSPosed/LSPlugin"
         }
     }
 }

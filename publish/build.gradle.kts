@@ -24,24 +24,24 @@ dependencies {
 publish {
     githubRepo = "LSPosed/LSPlugin"
     publishPlugin("$group.publish", "publish", "org.lsposed.lsplugin.PublishPlugin") {
-        name.set("Publish")
-        description.set("Android resources optimizer plugin")
-        url.set("https://github.com/LSPosed/LSPlugin")
+        name = "Publish"
+        description = "Android resources optimizer plugin"
+        url = "https://github.com/LSPosed/LSPlugin"
         licenses {
             license {
-                name.set("Apache License 2.0")
-                url.set("https://github.com/LSPosed/LSPlugin/blob/master/LICENSE.txt")
+                name = "Apache License 2.0"
+                url = "https://github.com/LSPosed/LSPlugin/blob/master/LICENSE.txt"
             }
         }
         developers {
             developer {
-                name.set("LSPosed")
-                url.set("https://lsposed.org")
+                name = "LSPosed"
+                url = "https://lsposed.org"
             }
         }
         scm {
-            connection.set("scm:git:https://github.com/LSPosed/LSPlugin.git")
-            url.set("https://github.com/LSPosed/LSPlugin")
+            connection = "scm:git:https://github.com/LSPosed/LSPlugin.git"
+            url = "https://github.com/LSPosed/LSPlugin"
         }
     }
 }

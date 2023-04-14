@@ -2,7 +2,7 @@ package org.lsposed.lsplugin
 
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.ExternalNativeCmakeOptions
+import com.android.build.api.dsl.CmakeFlags
 import com.android.build.gradle.api.AndroidBasePlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -27,7 +27,7 @@ private open class CmakerExtensionImpl(private val project: Project) : CmakerExt
         }
     }
 
-    override fun default(action: ExternalNativeCmakeOptions.() -> Unit) {
+    override fun default(action: CmakeFlags.() -> Unit) {
         val flags = arrayOf(
             "-Wall",
             "-Qunused-arguments",
@@ -51,7 +51,7 @@ private open class CmakerExtensionImpl(private val project: Project) : CmakerExt
         }
     }
 
-    fun Project.default(action: ExternalNativeCmakeOptions.() -> Unit) {
+    fun Project.default(action: CmakeFlags.() -> Unit) {
         plugins.withType(AndroidBasePlugin::class.java) {
             extensions.configure(CommonExtension::class.java) {
                 defaultConfig {
@@ -68,7 +68,7 @@ private open class CmakerExtensionImpl(private val project: Project) : CmakerExt
         }
     }
 
-    override fun buildTypes(action: ExternalNativeCmakeOptions.(BuildType) -> Unit) {
+    override fun buildTypes(action: CmakeFlags.(BuildType) -> Unit) {
         val flags = arrayOf(
             "-flto",
             "-ffunction-sections",
@@ -102,7 +102,7 @@ private open class CmakerExtensionImpl(private val project: Project) : CmakerExt
         }
     }
 
-    fun Project.buildTypes(action: ExternalNativeCmakeOptions.(BuildType) -> Unit) {
+    fun Project.buildTypes(action: CmakeFlags.(BuildType) -> Unit) {
         plugins.withType(AndroidBasePlugin::class.java) {
             extensions.configure(CommonExtension::class.java) {
                 buildTypes {
