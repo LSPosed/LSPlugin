@@ -82,21 +82,35 @@ private open class CmakerExtensionImpl(private val project: Project) : CmakerExt
             "-Oz", "-DNDEBUG"
         ).joinToString(" ")
         project.buildTypes {
-            if (it.name == "debug") {
-                arguments.addAll(
-                    arrayOf(
-                        "-DCMAKE_CXX_FLAGS_DEBUG=-Og",
-                        "-DCMAKE_C_FLAGS_DEBUG=-Og",
-                    )
-                )
-            } else if (it.name == "release") {
-                cppFlags.addAll(flags)
-                cFlags.addAll(flags)
-                arguments(
-                    "-DCMAKE_BUILD_TYPE=Release",
-                    "-DCMAKE_CXX_FLAGS_RELEASE=$configFlags",
-                    "-DCMAKE_C_FLAGS_RELEASE=$configFlags",
-                )
+            fun setBuildTypeDefault(name: String) =
+                when (name) {
+                    "debug" -> {
+                        arguments.addAll(
+                            arrayOf(
+                                "-DCMAKE_CXX_FLAGS_DEBUG=-Og",
+                                "-DCMAKE_C_FLAGS_DEBUG=-Og",
+                            )
+                        )
+                        true
+                    }
+
+                    "release" -> {
+                        cppFlags.addAll(flags)
+                        cFlags.addAll(flags)
+                        arguments(
+                            "-DCMAKE_BUILD_TYPE=Release",
+                            "-DCMAKE_CXX_FLAGS_RELEASE=$configFlags",
+                            "-DCMAKE_C_FLAGS_RELEASE=$configFlags",
+                        )
+                        true
+                    }
+
+                    else -> false
+                }
+            if (!setBuildTypeDefault(it.name)) {
+                for (fallback in it.matchingFallbacks) {
+                    setBuildTypeDefault(fallback)
+                }
             }
             action(it)
         }
