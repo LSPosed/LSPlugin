@@ -23,7 +23,7 @@ private open class JGitExtensionImpl(private val project: Project) : JGitExtensi
     override fun repo(fromRootProject: Boolean): JGitExtension.JRepo? {
         val builder = FileRepositoryBuilder().apply {
             project.file(".git").run {
-                gitDir = if (exists()) this else if (fromRootProject) project.rootProject.file(".git") else null
+                findGitDir(if (exists()) this else if (fromRootProject) project.rootProject.file(".git") else null)
             }
         }
         return runCatching { JRepoImpl(builder.build()) }.getOrNull()
