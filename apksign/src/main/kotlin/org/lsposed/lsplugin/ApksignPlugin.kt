@@ -57,7 +57,7 @@ private open class ApksignExtensionImpl(private val project: Project) : ApksignE
                         }
                     }
                 } else {
-                    println("Apksign fallbacks to use debug singature")
+                    println("Apksign fallbacks to use debug singature as ${storeFile?.absolutePath} does not exist")
                     buildTypes {
                         all {
                             signingConfig = signingConfigs.getByName("debug")
