@@ -25,5 +25,5 @@ sourceSets {
 }
 
 dependencies {
-    implementation(kotlin("gradle-plugin", "1.8.10"))
+    implementation(kotlin("gradle-plugin", "1.9.23"))
 }
