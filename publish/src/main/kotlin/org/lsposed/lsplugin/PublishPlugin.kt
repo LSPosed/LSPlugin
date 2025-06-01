@@ -112,8 +112,8 @@ class PublishPlugin : Plugin<Project> {
             plugins.withType(MavenPublishPlugin::class.java) {
                 extensions.configure(PublishingExtension::class.java) {
                     configRepository {
-                        name = "ossrh"
-                        url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                        name = "CentralPortal"
+                        url = uri("https://central.sonatype.com/api/v1/publisher/upload")
                         credentials(PasswordCredentials::class)
                     }
                 }
