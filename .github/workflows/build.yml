@@ -38,5 +38,6 @@ jobs:
         with:
           name: ${{ matrix.os }}-library
           path: ~/.m2
+          include-hidden-files: true
       - name: Stop Gradle
         run: ./gradlew --stop
