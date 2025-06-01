@@ -23,7 +23,7 @@ dependencies {
 
 publish {
     githubRepo = "LSPosed/LSPlugin"
-    publishPlugin("$group.apksign", "apksign", "org.lsposed.lsplugin.ApksignPlugin") {
+    publishPlugin("apksign", "org.lsposed.lsplugin.ApksignPlugin") {
         name = "ApkSign"
         description = "Sign apk"
         url = "https://github.com/LSPosed/LSPlugin"

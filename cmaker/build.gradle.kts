@@ -23,7 +23,7 @@ dependencies {
 
 publish {
     githubRepo = "LSPosed/LSPlugin"
-    publishPlugin("$group.cmaker", "cmaker", "org.lsposed.lsplugin.CmakerPlugin") {
+    publishPlugin("cmaker", "org.lsposed.lsplugin.CmakerPlugin") {
         name = "CMaker"
         description = "Configure cmake build"
         url = "https://github.com/LSPosed/LSPlugin"

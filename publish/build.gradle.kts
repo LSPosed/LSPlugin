@@ -4,6 +4,7 @@ plugins {
     `java-gradle-plugin`
     `maven-publish`
     signing
+//    alias(libs.plugins.maven.publish)
 }
 
 java {
@@ -24,7 +25,7 @@ dependencies {
 
 publish {
     githubRepo = "LSPosed/LSPlugin"
-    publishPlugin("$group.publish", "publish", "org.lsposed.lsplugin.PublishPlugin") {
+    publishPlugin("publish", "org.lsposed.lsplugin.PublishPlugin") {
         name = "Publish"
         description = "Android resources optimizer plugin"
         url = "https://github.com/LSPosed/LSPlugin"
@@ -46,3 +47,35 @@ publish {
         }
     }
 }
+
+//mavenPublishing {
+//    coordinates("com.example.mylibrary", "library-name", "1.0.3-SNAPSHOT")
+//
+//    pom {
+//        name = "My Library"
+//        description = "A description of what my library does."
+//        inceptionYear = "2020"
+//        url = "https://github.com/username/mylibrary/"
+//        licenses {
+//            license {
+//                name = "The Apache License, Version 2.0"
+//                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+//                distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+//            }
+//        }
+//        developers {
+//            developer {
+//                id = "username"
+//                name = "User Name"
+//                url = "https://github.com/username/"
+//            }
+//        }
+//        scm {
+//            url = "https://github.com/username/mylibrary/"
+//            connection = "scm:git:git://github.com/username/mylibrary.git"
+//            developerConnection = "scm:git:ssh://git@github.com/username/mylibrary.git"
+//        }
+//    }
+//}
+//
+

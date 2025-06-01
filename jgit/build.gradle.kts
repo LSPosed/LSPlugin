@@ -23,7 +23,7 @@ dependencies {
 
 publish {
     githubRepo = "LSPosed/LSPlugin"
-    publishPlugin("$group.jgit", "jgit", "org.lsposed.lsplugin.JGitPlugin") {
+    publishPlugin("jgit", "org.lsposed.lsplugin.JGitPlugin") {
         name = "JGit"
         description = "Git plugin for Gradle"
         url = "https://github.com/LSPosed/LSPlugin"

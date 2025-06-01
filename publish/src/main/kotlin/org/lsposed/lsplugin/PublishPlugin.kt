@@ -1,6 +1,7 @@
 package org.lsposed.lsplugin
 
 import com.vanniktech.maven.publish.SonatypeHost
+import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublicationContainer
@@ -42,33 +43,27 @@ open class PublishExtensionImpl(private val project: Project) : PublishExtension
         }
 
 
-    override fun publications(action: PublicationContainer.() -> Unit) {
+    override fun publications(artifactId: String, action: Action<in MavenPom>) {
         project.run {
             extensions.configure(CentralMavenPublishExtension::class.java) {
                 publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-                signAllPublications()
-            }
-            plugins.withType(MavenPublishPlugin::class.java) {
-                extensions.configure(PublishingExtension::class.java) {
-                    publications {
-                        action()
-                    }
+                findProperty("signingKey")?.let {
+                    signAllPublications()
                 }
+                pom(action)
+                coordinates(artifactId=artifactId)
             }
         }
     }
 
-    override fun publishPlugin(id: String, name: String, implementationClass: String, action: MavenPom.() -> Unit) {
+    override fun publishPlugin(artifactId: String, implementationClass: String, action: Action<in MavenPom>) {
         project.run {
-            extensions.configure(CentralMavenPublishExtension::class.java) {
-                publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-                signAllPublications()
-            }
+            publications(artifactId, action)
             plugins.withType(JavaGradlePluginPlugin::class.java) {
                 extensions.configure(GradlePluginDevelopmentExtension::class.java) {
                     plugins {
                         register(name) {
-                            this@register.id = id
+                            this@register.id = "${group}.${artifactId}"
                             this@register.implementationClass = implementationClass
                         }
                     }
@@ -80,14 +75,10 @@ open class PublishExtensionImpl(private val project: Project) : PublishExtension
                 extensions.configure(PublishingExtension::class.java) {
                     publications {
                         named<MavenPublication>("pluginMaven") {
-                            pom {
-                                action()
-                            }
+                            pom(action)
                         }
                         named<MavenPublication>("${name}PluginMarkerMaven") {
-                            pom {
-                                action()
-                            }
+                            pom(action)
                         }
                     }
                 }
