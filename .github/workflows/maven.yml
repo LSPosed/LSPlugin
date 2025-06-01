@@ -45,6 +45,6 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.maven_pgp_signingKey }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.maven_pgp_signingPassword }}
-          ORG_GRADLE_PROJECT_CentralPortalUsername: ${{ secrets.CentralPortalUsername }}
-          ORG_GRADLE_PROJECT_CentralPortalPassword: ${{ secrets.CentralPortalPassword }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.CentralPortalUsername }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.CentralPortalPassword }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

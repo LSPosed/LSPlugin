@@ -1,22 +1,19 @@
 package org.lsposed.lsplugin
 
+import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.repositories.PasswordCredentials
 import org.gradle.api.publish.PublicationContainer
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin
-import org.gradle.kotlin.dsl.credentials
-import org.gradle.plugins.signing.SigningExtension
-import org.gradle.plugins.signing.SigningPlugin
-import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository
-import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.maven.MavenPom
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.*
 import org.gradle.plugin.devel.GradlePluginDevelopmentExtension
 import org.gradle.plugin.devel.plugins.JavaGradlePluginPlugin
+import com.vanniktech.maven.publish.MavenPublishPlugin as CentralMavenPublishPlugin
+import com.vanniktech.maven.publish.MavenPublishBaseExtension as CentralMavenPublishExtension
 
 inline fun Project.configRepository(crossinline setup: MavenArtifactRepository.() -> Unit) {
     plugins.withType(MavenPublishPlugin::class.java) {
@@ -47,6 +44,11 @@ open class PublishExtensionImpl(private val project: Project) : PublishExtension
 
     override fun publications(action: PublicationContainer.() -> Unit) {
         project.run {
+            plugins.apply(CentralMavenPublishPlugin::class.java)
+            extensions.configure(CentralMavenPublishExtension::class.java) {
+                publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+                signAllPublications()
+            }
             plugins.withType(MavenPublishPlugin::class.java) {
                 extensions.configure(PublishingExtension::class.java) {
                     publications {
@@ -59,6 +61,11 @@ open class PublishExtensionImpl(private val project: Project) : PublishExtension
 
     override fun publishPlugin(id: String, name: String, implementationClass: String, action: MavenPom.() -> Unit) {
         project.run {
+            plugins.apply(CentralMavenPublishPlugin::class.java)
+            extensions.configure(CentralMavenPublishExtension::class.java) {
+                publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+                signAllPublications()
+            }
             plugins.withType(JavaGradlePluginPlugin::class.java) {
                 extensions.configure(GradlePluginDevelopmentExtension::class.java) {
                     plugins {
@@ -91,39 +98,13 @@ open class PublishExtensionImpl(private val project: Project) : PublishExtension
     }
 }
 
+@Suppress("unused")
 class PublishPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.subprojects {
             extensions.create(PublishExtensionImpl::class.java, "publish", PublishExtensionImpl::class.java, this)
-            plugins.withType(SigningPlugin::class.java) {
-                extensions.configure(SigningExtension::class.java) {
-                    val signingKey = findProperty("signingKey") as String?
-                    val signingPassword = findProperty("signingPassword") as String?
-                    if (!signingKey.isNullOrBlank() && !signingPassword.isNullOrBlank()) {
-                        useInMemoryPgpKeys(signingKey, signingPassword)
-                        plugins.withType(MavenPublishPlugin::class.java) {
-                            extensions.configure(PublishingExtension::class.java) {
-                                sign(publications)
-                            }
-                        }
-                    }
-                }
-            }
-            plugins.withType(MavenPublishPlugin::class.java) {
-                extensions.configure(PublishingExtension::class.java) {
-                    configRepository {
-                        name = "CentralPortal"
-                        url = uri("https://central.sonatype.com/api/v1/publisher/upload")
-                        credentials(PasswordCredentials::class)
-                    }
-                }
-            }
-            plugins.withType(JavaPlugin::class.java) {
-                extensions.configure(JavaPluginExtension::class.java) {
-                    withSourcesJar()
-                    withJavadocJar()
-                }
-            }
+            project.extra.set("signingInMemoryKey", findProperty("signingKey") as String?)
+            project.extra.set("signingInMemoryPassword", findProperty("signingPassword") as String?)
         }
     }
 }

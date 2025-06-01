@@ -19,6 +19,7 @@ kotlin {
 
 dependencies {
     compileOnly(libs.agp)
+    implementation(libs.maven.publish)
 }
 
 publish {
