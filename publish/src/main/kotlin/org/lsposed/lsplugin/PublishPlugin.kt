@@ -44,7 +44,6 @@ open class PublishExtensionImpl(private val project: Project) : PublishExtension
 
     override fun publications(action: PublicationContainer.() -> Unit) {
         project.run {
-            plugins.apply(CentralMavenPublishPlugin::class.java)
             extensions.configure(CentralMavenPublishExtension::class.java) {
                 publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
                 signAllPublications()
@@ -61,7 +60,6 @@ open class PublishExtensionImpl(private val project: Project) : PublishExtension
 
     override fun publishPlugin(id: String, name: String, implementationClass: String, action: MavenPom.() -> Unit) {
         project.run {
-            plugins.apply(CentralMavenPublishPlugin::class.java)
             extensions.configure(CentralMavenPublishExtension::class.java) {
                 publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
                 signAllPublications()
@@ -102,9 +100,10 @@ open class PublishExtensionImpl(private val project: Project) : PublishExtension
 class PublishPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.subprojects {
+            plugins.apply(CentralMavenPublishPlugin::class.java)
             extensions.create(PublishExtensionImpl::class.java, "publish", PublishExtensionImpl::class.java, this)
-            project.extra.set("signingInMemoryKey", findProperty("signingKey") as String?)
-            project.extra.set("signingInMemoryKeyPassword", findProperty("signingPassword") as String?)
+            extra.set("signingInMemoryKey", findProperty("signingKey") as String?)
+            extra.set("signingInMemoryKeyPassword", findProperty("signingPassword") as String?)
         }
     }
 }
