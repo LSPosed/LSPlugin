@@ -104,7 +104,7 @@ class PublishPlugin : Plugin<Project> {
         project.subprojects {
             extensions.create(PublishExtensionImpl::class.java, "publish", PublishExtensionImpl::class.java, this)
             project.extra.set("signingInMemoryKey", findProperty("signingKey") as String?)
-            project.extra.set("signingInMemoryPassword", findProperty("signingPassword") as String?)
+            project.extra.set("signingInMemoryKeyPassword", findProperty("signingPassword") as String?)
         }
     }
 }
