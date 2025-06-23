@@ -26,5 +26,5 @@ sourceSets {
 
 dependencies {
     implementation(kotlin("gradle-plugin", "2.0.21"))
-    implementation("com.vanniktech:gradle-maven-publish-plugin:0.32.0")
+    implementation("com.vanniktech:gradle-maven-publish-plugin:0.33.0")
 }
