@@ -1,5 +1,5 @@
 [libraries]
-jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version = "7.3.0.202506031305-r" }
+jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version = "7.4.0.202509020913-r" }
 agp = { module = "com.android.tools.build:gradle-api", version = "8.10.1" }
 maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version = "0.32.0" }
 
