@@ -41,7 +41,7 @@ private open class CmakerExtensionImpl(private val project: Project) : CmakerExt
             "-Wno-unused-value",
             "-D__FILE__=__FILE_NAME__",
         )
-        project.default {
+        val chainedAction: CmakeFlags.() -> Unit = {
             cppFlags("-std=c++2b", *flags)
             cFlags("-std=c2x", *flags)
             ccachePatch?.let {
@@ -49,9 +49,10 @@ private open class CmakerExtensionImpl(private val project: Project) : CmakerExt
             }
             action()
         }
+        project.applyDefault(chainedAction)
     }
 
-    fun Project.default(action: CmakeFlags.() -> Unit) {
+    fun Project.applyDefault(action: CmakeFlags.() -> Unit) {
         plugins.withType(AndroidBasePlugin::class.java) {
             extensions.configure(CommonExtension::class.java) {
                 defaultConfig {
@@ -64,7 +65,7 @@ private open class CmakerExtensionImpl(private val project: Project) : CmakerExt
             }
         }
         subprojects {
-            this.default(action)
+            this.applyDefault(action)
         }
     }
 
@@ -81,7 +82,7 @@ private open class CmakerExtensionImpl(private val project: Project) : CmakerExt
         val configFlags = arrayOf(
             "-Oz", "-DNDEBUG"
         ).joinToString(" ")
-        project.buildTypes {
+        val chainedAction: CmakeFlags.(BuildType) -> Unit = {
             fun setBuildTypeDefault(name: String) =
                 when (name) {
                     "debug" -> {
@@ -114,9 +115,10 @@ private open class CmakerExtensionImpl(private val project: Project) : CmakerExt
             }
             action(it)
         }
+        project.applyBuildTypes(chainedAction)
     }
 
-    fun Project.buildTypes(action: CmakeFlags.(BuildType) -> Unit) {
+    fun Project.applyBuildTypes(action: CmakeFlags.(BuildType) -> Unit) {
         plugins.withType(AndroidBasePlugin::class.java) {
             extensions.configure(CommonExtension::class.java) {
                 buildTypes {
@@ -131,7 +133,7 @@ private open class CmakerExtensionImpl(private val project: Project) : CmakerExt
             }
         }
         subprojects {
-            this.buildTypes(action)
+            this.applyBuildTypes(action)
         }
     }
 }
