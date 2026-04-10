@@ -1,5 +1,6 @@
 plugins {
     `kotlin-dsl`
+    signing
 }
 
 repositories {
@@ -27,4 +28,10 @@ sourceSets {
 dependencies {
     implementation(kotlin("gradle-plugin"))
     implementation("com.vanniktech:gradle-maven-publish-plugin:0.36.0")
+}
+
+signing {
+    setRequired {
+        !gradle.taskGraph.allTasks.any { it is PublishToMavenLocal }
+    }
 }
