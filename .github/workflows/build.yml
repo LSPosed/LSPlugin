@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - 'README.md'
   pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,16 +19,17 @@ jobs:
 
     steps:
       - name: Check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           submodules: 'recursive'
           fetch-depth: 0
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v6
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'gradle'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
       - name: Build with Gradle
         run: ./gradlew publishToMavenLocal
         env:
@@ -39,5 +41,3 @@ jobs:
           name: ${{ matrix.os }}-library
           path: ~/.m2
           include-hidden-files: true
-      - name: Stop Gradle
-        run: ./gradlew --stop
