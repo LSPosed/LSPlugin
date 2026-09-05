@@ -17,7 +17,7 @@ fun Project.findInPath(executable: String, property: String): String? {
             .toFile()
     }.firstOrNull { path ->
         path.exists()
-    }?.absolutePath ?: properties.getOrDefault(property, null) as? String?
+    }?.absolutePath ?: findProperty(property) as? String?
 }
 
 private open class CmakerExtensionImpl(private val project: Project) : CmakerExtension {
