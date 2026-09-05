@@ -15,25 +15,25 @@ private open class ApksignExtensionImpl(private val project: Project) : ApksignE
     override var storeFileProperty: String? = null
         set(value) {
             field = value
-            storeFile = (project.properties.getOrDefault(value, null) as? String?)?.let { project.rootProject.file(it) }
+            storeFile = (value?.let { project.findProperty(it) } as? String?)?.let { project.rootProject.file(it) }
             maybeConfig()
         }
     override var storePasswordProperty: String? = null
         set(value) {
             field = value
-            storePassword = project.properties.getOrDefault(value, null) as? String?
+            storePassword = value?.let { project.findProperty(it) } as? String?
             maybeConfig()
         }
     override var keyAliasProperty: String? = null
         set(value) {
             field = value
-            keyAlias = project.properties.getOrDefault(value, null) as? String?
+            keyAlias = value?.let { project.findProperty(it) } as? String?
             maybeConfig()
         }
     override var keyPasswordProperty: String? = null
         set(value) {
             field = value
-            keyPassword = project.properties.getOrDefault(value, null) as? String?
+            keyPassword = value?.let { project.findProperty(it) } as? String?
             maybeConfig()
         }
 
