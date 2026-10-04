@@ -45,7 +45,7 @@ open class PublishExtensionImpl(private val project: Project) : PublishExtension
         project.run {
             extensions.configure(CentralMavenPublishExtension::class.java) {
                 publishToMavenCentral()
-                findProperty("signingKey")?.let {
+                findProperty("signingInMemoryKey")?.let {
                     signAllPublications()
                 }
                 pom(action)
@@ -100,8 +100,6 @@ class PublishPlugin : Plugin<Project> {
                 PublishExtensionImpl::class.java,
                 this
             )
-            extra.set("signingInMemoryKey", findProperty("signingKey") as String?)
-            extra.set("signingInMemoryKeyPassword", findProperty("signingPassword") as String?)
         }
     }
 }

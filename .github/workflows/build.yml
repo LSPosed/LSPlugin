@@ -33,8 +33,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew publishToMavenLocal
         env:
-          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.maven_pgp_signingKey }}
-          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.maven_pgp_signingPassword }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.maven_pgp_signingKey }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.maven_pgp_signingPassword }}
       - name: Upload library
         uses: actions/upload-artifact@v7
         with:
