@@ -27,7 +27,7 @@ publish {
     githubRepo = "LSPosed/LSPlugin"
     publishPlugin("publish", "org.lsposed.lsplugin.PublishPlugin") {
         name = "Publish"
-        description = "Android resources optimizer plugin"
+        description = "Publish plugin"
         url = "https://github.com/LSPosed/LSPlugin"
         licenses {
             license {
