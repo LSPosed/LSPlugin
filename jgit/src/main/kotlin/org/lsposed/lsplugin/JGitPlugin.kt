@@ -5,18 +5,23 @@ import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
+import java.io.File
 
-private class JRepoImpl(override val raw: Repository) : JGitExtension.JRepo {
+private class JRepoImpl(
+    override val raw: Repository,
+    private val gitDir: File,
+    private val providers: ProviderFactory,
+) : JGitExtension.JRepo {
     override val git: Git
         get() = Git(raw)
 
-    override fun commitCount(ref: String): Int? = runCatching {
-        git.log().add(raw.resolve(ref)).call().count()
-    }.getOrNull()
-
-    override val latestTag: String? = runCatching {
-        git.describe().setTags(true).setAbbrev(0).call()
-    }.getOrNull()
+    override fun version(ref: String): Provider<GitVersion> =
+        providers.of(GitVersionSource::class.java) {
+            parameters.gitDirectory.set(gitDir.absolutePath)
+            parameters.ref.set(ref)
+        }
 }
 
 private open class JGitExtensionImpl(private val project: Project) : JGitExtension {
@@ -26,7 +31,9 @@ private open class JGitExtensionImpl(private val project: Project) : JGitExtensi
                 findGitDir(if (exists()) this else if (fromRootProject) project.rootProject.file(".git") else null)
             }
         }
-        return runCatching { JRepoImpl(builder.build()) }.getOrNull()
+        return runCatching { builder.build() }.getOrNull()?.let { raw ->
+            JRepoImpl(raw, builder.gitDir, project.providers)
+        }
     }
 }
 
